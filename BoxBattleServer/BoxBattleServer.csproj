@@ -14,7 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Hubs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\BoxBattleClient\Assets\Scripts\Interfaces\*.cs">
+      <Link>Interfaces\%(FileName)%(Extension)</Link>
+    </Compile> 
   </ItemGroup>
 </Project>

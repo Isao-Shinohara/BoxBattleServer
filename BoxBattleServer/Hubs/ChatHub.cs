@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using BoxBattle.Interfaces;
 using MagicOnion.Server.Hubs;
 
 public class ChatHub : StreamingHubBase<IChatHub, IChatHubReceiver>, IChatHub
