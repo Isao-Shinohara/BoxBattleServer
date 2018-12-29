@@ -24,9 +24,8 @@ public class ChatHub : StreamingHubBase<IChatHub, IChatHubReceiver>, IChatHub
 		//ルーム内のメンバーから自分を削除
 		await room.RemoveAsync(this.Context);
 		//退室したことを全メンバーに通知
-		this.Broadcast(room).OnLeave(me);
+		this.BroadcastExceptSelf(room).OnLeave(me);
 	}
-
 
 	public async Task SendMessageAsync(string message)
 	{
@@ -34,9 +33,15 @@ public class ChatHub : StreamingHubBase<IChatHub, IChatHubReceiver>, IChatHub
 		this.Broadcast(room).OnSendMessage(me, message);
 	}
 
+	protected override ValueTask OnConnecting()
+	{
+		Logger.Debug("OnConnecting");
+		return CompletedTask;
+	}
+
 	protected override ValueTask OnDisconnected()
 	{
-		//nop
+		Logger.Debug("OnDisconnected");
 		return CompletedTask;
 	}
 }
