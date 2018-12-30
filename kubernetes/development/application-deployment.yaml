@@ -18,4 +18,4 @@ spec:
       - name: app
         image: isaoshinohara/boxbattleserver:1
         ports:
-        - containerPort: 30001
+        - containerPort: 30002
