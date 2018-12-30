@@ -8,7 +8,6 @@ RUN dotnet restore
 
 # copy everything else and build app
 COPY BoxBattleServer/. ./BoxBattleServer/
-COPY tmp/Interfaces ./BoxBattleServer/
 WORKDIR /app/BoxBattleServer
 RUN dotnet publish -c Debug -o out
 
