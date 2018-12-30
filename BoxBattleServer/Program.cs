@@ -29,7 +29,7 @@ namespace BoxBattleServer
 			// localhost:12345でListen
 			var server = new global::Grpc.Core.Server {
 				Services = { service },
-				Ports = { new ServerPort("localhost", Define.Port, ServerCredentials.Insecure) }
+				Ports = { new ServerPort("0.0.0.0", Define.Port, ServerCredentials.Insecure) }
 			};
 
 			// MagicOnion起動
