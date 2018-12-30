@@ -21,9 +21,4 @@
     <Folder Include="Cores\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\BoxBattleClient\Assets\Scripts\Interfaces\*.cs">
-      <Link>Interfaces\%(FileName)%(Extension)</Link>
-    </Compile> 
-  </ItemGroup>
 </Project>
