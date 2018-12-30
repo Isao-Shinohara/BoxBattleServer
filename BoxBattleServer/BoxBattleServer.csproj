@@ -19,6 +19,22 @@
   <ItemGroup>
     <Folder Include="Hubs\" />
     <Folder Include="Cores\" />
+    <Folder Include="Tools\" />
+    <Folder Include="Tools\MagicOnionCodeGenerator\" />
+    <Folder Include="Tools\MagicOnionCodeGenerator\osx-x64\" />
+    <Folder Include="Tools\MessagePackUniversalCodeGenerator\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Tools\MagicOnionCodeGenerator\osx-x64\moc.deps.json" />
+    <Content Remove="Tools\MagicOnionCodeGenerator\osx-x64\moc.runtimeconfig.json" />
+    <Content Remove="Tools\MessagePackUniversalCodeGenerator\osx-x64\mpc.deps.json" />
+    <Content Remove="Tools\MessagePackUniversalCodeGenerator\osx-x64\mpc.runtimeconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tools\MagicOnionCodeGenerator\osx-x64\moc.deps.json" />
+    <None Include="Tools\MagicOnionCodeGenerator\osx-x64\moc.runtimeconfig.json" />
+    <None Include="Tools\MessagePackUniversalCodeGenerator\osx-x64\mpc.deps.json" />
+    <None Include="Tools\MessagePackUniversalCodeGenerator\osx-x64\mpc.runtimeconfig.json" />
+  </ItemGroup>
 </Project>
