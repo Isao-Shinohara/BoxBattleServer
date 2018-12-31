@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: app
       tier: frontend
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -17,5 +17,12 @@ spec:
       containers:
       - name: app
         image: isaoshinohara/boxbattleserver:1
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
         ports:
         - containerPort: 30002
+      initContainers:
+      - name: redis
+        image: busybox
+        command: ['sh', '-c', 'until nslookup redis; do echo waiting for redis; sleep 2; done;']
