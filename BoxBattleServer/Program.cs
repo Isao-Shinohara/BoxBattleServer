@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Logging;
@@ -16,6 +17,12 @@ namespace BoxBattleServer
 	public class Program
 	{
 		public static void Main(string[] args)
+		{
+			StartMagicOnion();
+			WaitApplication();
+		}
+
+		private static void StartMagicOnion()
 		{
 			//コンソールにログを表示させる
 			GrpcEnvironment.SetLogger(new CompositeLogger(
@@ -37,12 +44,19 @@ namespace BoxBattleServer
 
 			// MagicOnion起動
 			server.Start();
-
-			CreateWebHostBuilder(args).Build().Run();
 		}
 
-		public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-			WebHost.CreateDefaultBuilder(args)
-				.UseStartup<Startup>();
+		private static void WaitApplication()
+		{
+			Console.WriteLine("Application started. Press Ctrl+C to shut down.");
+			var keepRunning = true;
+			Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
+				e.Cancel = true;
+				keepRunning = false;
+			};
+
+			while (keepRunning) { }
+			Console.WriteLine("\nApplication end.");
+		}
 	}
 }
