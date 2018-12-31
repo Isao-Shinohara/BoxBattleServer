@@ -1,48 +1,64 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Logging;
 using MagicOnion.Redis;
 using MagicOnion.Server;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
 
 namespace BoxBattleServer
 {
 	public class Program
 	{
+		private static IConfigurationRoot configuration;
+
 		public static void Main(string[] args)
 		{
+			SetConfiguration();
 			StartMagicOnion();
 			WaitApplication();
 		}
 
+		private static void SetConfiguration()
+		{
+			string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+			Console.WriteLine($"ASPNETCORE_ENVIRONMENT: {environment}");
+
+			configuration = new ConfigurationBuilder()
+						.SetBasePath(Directory.GetCurrentDirectory())
+						.AddJsonFile($"appsettings.json", optional: true)
+						.AddJsonFile($"appsettings.{environment}.json", optional: true)
+						.Build();
+		}
+
 		private static void StartMagicOnion()
 		{
-			//コンソールにログを表示させる
+			// Set console log
 			GrpcEnvironment.SetLogger(new CompositeLogger(
 				new ConsoleLogger()
 			));
 
+			// MagicOnion
 			var options = new MagicOnionOptions(true) {
 				MagicOnionLogger = new MagicOnionLogToGrpcLoggerWithNamedDataDump(),
 				DefaultGroupRepositoryFactory = new RedisGroupRepositoryFactory()
 			};
-			options.ServiceLocator.Register(ConnectionMultiplexer.Connect("localhost"));
+
+			var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
+			Console.WriteLine($"Redis host: {redisHost}");
+			options.ServiceLocator.Register(ConnectionMultiplexer.Connect(redisHost));
 			var service = MagicOnionEngine.BuildServerServiceDefinition(options);
 
-			// localhost:12345でListen
+			var serverHost = configuration["Server:Host"];
+			var serverPort = Int32.Parse(configuration["Server:Port"]);
+			Console.WriteLine($"Server host: {serverHost}, port {serverPort}");
 			var server = new global::Grpc.Core.Server {
 				Services = { service },
-				Ports = { new ServerPort("0.0.0.0", Define.Port, ServerCredentials.Insecure) }
+				Ports = { new ServerPort(serverHost, serverPort, ServerCredentials.Insecure) }
 			};
 
-			// MagicOnion起動
+			// Start MagicOnion
 			server.Start();
 		}
 
