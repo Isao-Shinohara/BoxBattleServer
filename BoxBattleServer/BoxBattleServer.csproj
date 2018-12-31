@@ -18,7 +18,8 @@
 
   <ItemGroup>
     <Folder Include="Hubs\" />
-    <Folder Include="Cores\" />
+    <Folder Include="Properties\" />
+    <Folder Include="appsettings\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -614,5 +615,8 @@
     <None Remove="Tools\MessagePackUniversalCodeGenerator\osx-x64\zh-Hant\Microsoft.CodeAnalysis.VisualBasic.resources.dll" />
     <None Remove="Tools\MessagePackUniversalCodeGenerator\osx-x64\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll" />
     <None Remove="Tools\MessagePackUniversalCodeGenerator\osx-x64\zh-Hant\Microsoft.CodeAnalysis.resources.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Cores\Define.cs" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 
 ## Run by dotnet-cli
 ```
-dotnet run --project BoxBattleServer > /tmp/BoxBattleServer.log 2>&1 &
+./tools/dotnet_run_local.sh > /tmp/BoxBattleServer.log 2>&1 &
 ```
 
 ## Deploy application to Kubernetes cluster
