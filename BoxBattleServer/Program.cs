@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Grpc.Core.Logging;
+using MagicOnion.Redis;
 using MagicOnion.Server;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using StackExchange.Redis;
 
 namespace BoxBattleServer
 {
@@ -20,10 +22,11 @@ namespace BoxBattleServer
 				new ConsoleLogger()
 			));
 
-			//--- MagicOnion 側のログを gRPC のログに流し込む
-			//--- そのとき名前付き (JSON 形式) でデータをダンプ
-			var logger = new MagicOnionLogToGrpcLoggerWithNamedDataDump();
-			var options = new MagicOnionOptions(true) { MagicOnionLogger = logger };
+			var options = new MagicOnionOptions(true) {
+				MagicOnionLogger = new MagicOnionLogToGrpcLoggerWithNamedDataDump(),
+				DefaultGroupRepositoryFactory = new RedisGroupRepositoryFactory()
+			};
+			options.ServiceLocator.Register(ConnectionMultiplexer.Connect("localhost"));
 			var service = MagicOnionEngine.BuildServerServiceDefinition(options);
 
 			// localhost:12345でListen
