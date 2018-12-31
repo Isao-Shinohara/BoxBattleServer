@@ -24,13 +24,13 @@ namespace BoxBattleServer
 		private static void SetConfiguration()
 		{
 			string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-			if (environment == null) environment = "Development";
 			Console.WriteLine($"ASPNETCORE_ENVIRONMENT: {environment}");
 
 			configuration = new ConfigurationBuilder()
-						.SetBasePath(Directory.GetCurrentDirectory())
+						.SetBasePath($"{Directory.GetCurrentDirectory()}/appsettings")
 						.AddJsonFile($"appsettings.json", optional: true)
 						.AddJsonFile($"appsettings.{environment}.json", optional: true)
+						.AddEnvironmentVariables()
 						.Build();
 		}
 
@@ -43,13 +43,16 @@ namespace BoxBattleServer
 
 			// MagicOnion
 			var options = new MagicOnionOptions(true) {
-				MagicOnionLogger = new MagicOnionLogToGrpcLoggerWithNamedDataDump(),
-				DefaultGroupRepositoryFactory = new RedisGroupRepositoryFactory()
+				MagicOnionLogger = new MagicOnionLogToGrpcLoggerWithNamedDataDump()
 			};
 
-			var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
-			Console.WriteLine($"Redis host: {redisHost}");
-			options.ServiceLocator.Register(ConnectionMultiplexer.Connect(redisHost));
+			var dd = configuration["ASPNETCORE_ENVIRONMENT"];
+			if (configuration["ASPNETCORE_ENVIRONMENT"] != "Local") {
+				var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
+				Console.WriteLine($"Redis host: {redisHost}");
+				options.DefaultGroupRepositoryFactory = new RedisGroupRepositoryFactory();
+				options.ServiceLocator.Register(ConnectionMultiplexer.Connect(redisHost));
+			}
 			var service = MagicOnionEngine.BuildServerServiceDefinition(options);
 
 			var serverHost = configuration["Server:Host"];

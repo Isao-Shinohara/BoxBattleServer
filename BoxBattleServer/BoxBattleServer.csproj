@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <Folder Include="Hubs\" />
+    <Folder Include="Properties\" />
+    <Folder Include="appsettings\" />
   </ItemGroup>
 
   <ItemGroup>
