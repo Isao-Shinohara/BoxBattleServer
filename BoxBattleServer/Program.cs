@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 using Grpc.Core;
 using Grpc.Core.Logging;
 using MagicOnion.Redis;
@@ -23,6 +24,7 @@ namespace BoxBattleServer
 		private static void SetConfiguration()
 		{
 			string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+			if (environment == null) environment = "Development";
 			Console.WriteLine($"ASPNETCORE_ENVIRONMENT: {environment}");
 
 			configuration = new ConfigurationBuilder()
@@ -65,13 +67,16 @@ namespace BoxBattleServer
 		private static void WaitApplication()
 		{
 			Console.WriteLine("Application started. Press Ctrl+C to shut down.");
-			var keepRunning = true;
-			Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e) {
-				e.Cancel = true;
-				keepRunning = false;
+
+			var exitEvent = new ManualResetEvent(false);
+
+			Console.CancelKeyPress += (sender, eventArgs) => {
+				eventArgs.Cancel = true;
+				exitEvent.Set();
 			};
 
-			while (keepRunning) { }
+			exitEvent.WaitOne();
+
 			Console.WriteLine("\nApplication end.");
 		}
 	}
