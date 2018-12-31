@@ -1,3 +1,2 @@
 #!/bin/sh
-echo `dirname ${0}`
-`dirname ${0}`/exec_app.sh Local
+`dirname ${0}`/dotnet_run.sh Local
