@@ -12,7 +12,7 @@ WORKDIR /app/BoxBattleServer
 RUN dotnet publish -c Debug -o out
 
 # run application
-FROM microsoft/dotnet:2.2-runtime AS runtime
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS runtime
 WORKDIR /app
 COPY --from=build /app/BoxBattleServer/server.pfx ./
 COPY --from=build /app/BoxBattleServer/out ./
