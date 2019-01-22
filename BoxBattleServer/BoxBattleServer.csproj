@@ -14,12 +14,17 @@
     <PackageReference Include="MagicOnion" Version="2.0.3" />
     <PackageReference Include="MagicOnion.Redis" Version="2.0.3" />
     <PackageReference Include="MagicOnion.HttpGateway" Version="2.0.3" />
+    <PackageReference Include="StackExchange.Redis" Version="2.0.519" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Binary" Version="4.0.5" />
+    <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="4.0.5" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Hubs\" />
     <Folder Include="Properties\" />
     <Folder Include="appsettings\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

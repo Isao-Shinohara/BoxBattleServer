@@ -6,6 +6,7 @@ using Grpc.Core.Logging;
 using MagicOnion.Redis;
 using MagicOnion.Server;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
 namespace BoxBattleServer
@@ -17,6 +18,7 @@ namespace BoxBattleServer
 		public static void Main(string[] args)
 		{
 			SetConfiguration();
+			ConfigureServices(ServiceLocator.ServiceCollection);
 			StartMagicOnion();
 			WaitApplication();
 		}
@@ -34,6 +36,15 @@ namespace BoxBattleServer
 						.Build();
 		}
 
+		private static void ConfigureServices(IServiceCollection serviceCollection)
+		{
+			var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
+			Console.WriteLine($"Redis host: {redisHost}");
+			ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(redisHost);
+			IDatabase db = redis.GetDatabase();
+			serviceCollection.AddSingleton<IRepository>(new RedisRepository(db));
+		}
+
 		private static void StartMagicOnion()
 		{
 			// Set console log
@@ -46,7 +57,6 @@ namespace BoxBattleServer
 				MagicOnionLogger = new MagicOnionLogToGrpcLoggerWithNamedDataDump()
 			};
 
-			var dd = configuration["ASPNETCORE_ENVIRONMENT"];
 			if (configuration["ASPNETCORE_ENVIRONMENT"] != "Local") {
 				var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
 				Console.WriteLine($"Redis host: {redisHost}");
