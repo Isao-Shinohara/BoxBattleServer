@@ -39,9 +39,9 @@ namespace BoxBattle
 					CharacterType = (CharacterType)cRandom.Next(max),
 				};
 				await playerRepository.UpdateAsync(enemyUuidKey, enemyPlayerData);
+				battleData.PlayerList.Add(enemyPlayerData);
 			}
 			battleData.EnemyPlayerData = enemyPlayerData;
-			battleData.PlayerList.Add(enemyPlayerData);
 
 			// All player.
 			await battleRepository.UpdateAsync(battleDataKey, battleData);

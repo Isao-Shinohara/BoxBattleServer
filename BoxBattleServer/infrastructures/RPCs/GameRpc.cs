@@ -14,7 +14,7 @@ namespace BoxBattle
 
 		public async UnaryResult<BattleData> InitializeBattle(string uuid)
 		{
-			Logger.Debug($"CreatePlayerAsync: {uuid}");
+			Logger.Debug($"InitializeBattle: {uuid}");
 			return await battleService.InitializeBattle(uuid);
 		}
 	}
