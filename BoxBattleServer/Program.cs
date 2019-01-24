@@ -42,7 +42,7 @@ namespace BoxBattleServer
 			Console.WriteLine($"Redis host: {redisHost}");
 			ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(redisHost);
 			IDatabase db = redis.GetDatabase();
-			serviceCollection.AddSingleton<IRepository>(new RedisRepository(db));
+			serviceCollection.AddSingleton<IPlayerRepository>(new PlayerRepository(db));
 		}
 
 		private static void StartMagicOnion()

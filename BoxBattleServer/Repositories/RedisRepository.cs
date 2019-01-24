@@ -1,27 +1,41 @@
-﻿using MessagePack;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using MessagePack;
 using StackExchange.Redis;
 
 namespace BoxBattleServer
 {
-	public class RedisRepository : IRepository
+	public class RedisRepository<T> : IRepository<T>
 	{
-		private IDatabase db;
+		protected IDatabase db;
 
 		public RedisRepository(IDatabase db)
 		{
 			this.db = db;
 		}
 
-		public T Get<T>(string key)
+		public async Task<T> GetAsync(string key)
 		{
-			var value = db.StringGet(key);
-			return MessagePackSerializer.Deserialize<T>(value);
+			var bytes = await db.StringGetAsync(key);
+			if (bytes.IsNull) return default(T);
+			return MessagePackSerializer.Deserialize<T>(bytes);
 		}
 
-		public void Set<T>(string key, T value)
+		public async Task<List<T>> GetListAsync(List<string> keyList)
+		{
+			var list = new List<T>();
+			await Task.WhenAll(keyList.Select(async x => {
+				var data = await GetAsync(x);
+				list.Add(data);
+			}));
+			return list;
+		}
+
+		public async Task UpdateAsync(string key, T value)
 		{
 			var bytes = MessagePackSerializer.Serialize(value);
-			db.StringSet(key, bytes);
+			await db.StringSetAsync(key, bytes);
 		}
 	}
 }

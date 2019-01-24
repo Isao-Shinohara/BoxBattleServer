@@ -1,8 +1,12 @@
-﻿namespace BoxBattleServer
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace BoxBattleServer
 {
-	public interface IRepository
+	public interface IRepository<T>
 	{
-		T Get<T>(string key);
-		void Set<T>(string key, T value);
+		Task<T> GetAsync(string key);
+		Task<List<T>> GetListAsync(List<string> keyList);
+		Task UpdateAsync(string key, T value);
 	}
 }

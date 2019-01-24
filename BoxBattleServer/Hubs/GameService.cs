@@ -1,4 +1,8 @@
-﻿using BoxBattle.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BoxBattle.Interfaces;
+using BoxBattleServer.Datas;
 using MagicOnion;
 using MagicOnion.Server;
 
@@ -6,21 +10,42 @@ namespace BoxBattleServer.Hubs
 {
 	public class GameService : ServiceBase<IGameService>, IGameService
 	{
-		IRepository repository;
+		private const string enemyUuid = "enemy";
+
+		IPlayerRepository playerRepository;
 
 		public GameService()
 		{
-			repository = ServiceLocator.Get<IRepository>();
+			playerRepository = ServiceLocator.Get<IPlayerRepository>();
 		}
 
-		public async UnaryResult<string> CreateAsync(string uuid)
+		public async UnaryResult<List<PlayerData>> JoinBattle(string uuid)
 		{
-			Logger.Debug($"Received:{uuid}");
+			Logger.Debug($"CreatePlayerAsync: {uuid}");
 
-			repository.Set("test", uuid);
-			var ret = repository.Get<string>("test");
+			// My player.
+			var cRandom = new Random();
+			var max = Enum.GetValues(typeof(CharacterType)).Cast<int>().Max() + 1;
+			var myPlayerData = new PlayerData() {
+				Uuid = uuid,
+				CharacterType = (CharacterType)cRandom.Next(max),
+			};
+			await playerRepository.UpdateAsync(uuid, myPlayerData);
 
-			return ret;
+			// Enemy player.
+			var enemyPlayerData = await playerRepository.GetAsync(enemyUuid);
+			if(enemyPlayerData == null) {
+				enemyPlayerData = new PlayerData() {
+					Uuid = enemyUuid,
+					CharacterType = (CharacterType)cRandom.Next(max),
+				};
+				await playerRepository.UpdateAsync(enemyUuid, enemyPlayerData);
+			}
+
+			// All player.
+			var playerList = await playerRepository.GetListAsync(new List<string>() { uuid, enemyUuid });
+
+			return playerList;
 		}
 	}
 }
