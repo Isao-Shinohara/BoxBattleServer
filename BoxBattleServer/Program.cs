@@ -42,6 +42,8 @@ namespace BoxBattleServer
 			Console.WriteLine($"Redis host: {redisHost}");
 			ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(redisHost);
 			IDatabase db = redis.GetDatabase();
+
+			serviceCollection.AddSingleton<IBattleRepository>(new BattleRepository(db));
 			serviceCollection.AddSingleton<IPlayerRepository>(new PlayerRepository(db));
 		}
 
