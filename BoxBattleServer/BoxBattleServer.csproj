@@ -28,9 +28,9 @@
     <Folder Include="Domains\" />
     <Folder Include="Cores\" />
     <Folder Include="Domains\IRepositories\" />
-    <Folder Include="infrastructures\" />
-    <Folder Include="infrastructures\Redis\" />
-    <Folder Include="infrastructures\RPCs\" />
+    <Folder Include="Infrastructures\Redis\" />
+    <Folder Include="Infrastructures\RPCs\" />
+    <Folder Include="Applications\" />
   </ItemGroup>
 
   <ItemGroup>

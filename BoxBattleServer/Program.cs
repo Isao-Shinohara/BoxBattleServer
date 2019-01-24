@@ -46,6 +46,7 @@ namespace BoxBattle
 			// Dependency Injection.
 			serviceCollection.AddSingleton<IBattleRepository>(new RedisBattleRepository(db));
 			serviceCollection.AddSingleton<IPlayerRepository>(new RedisPlayerRepository(db));
+			serviceCollection.AddSingleton(new BattleService());
 		}
 
 		private static void StartMagicOnion()
