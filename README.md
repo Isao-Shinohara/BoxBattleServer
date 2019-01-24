@@ -24,6 +24,10 @@ kubectl apply -f kubernetes/development/
 
 ./tools/docker_push.sh [image number]
 ```
+### copy scripts
+```
+./tools/copy_scripts.sh
+```
 ### generate MagicOnionCode
 ```
 ./tools/generate_magic_onion_code.sh
