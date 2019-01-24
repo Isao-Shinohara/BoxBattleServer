@@ -1,6 +1,4 @@
-﻿using BoxBattleServer.Datas;
-
-namespace BoxBattleServer
+﻿namespace BoxBattle
 {
 	public interface IPlayerRepository : IRepository<PlayerData>
 	{

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace BoxBattleServer
+namespace BoxBattle
 {
 	public static class ServiceLocator
 	{

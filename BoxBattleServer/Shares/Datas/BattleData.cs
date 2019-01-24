@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using MessagePack;
 
-namespace BoxBattleServer.Datas
+namespace BoxBattle
 {
 	[MessagePackObject]
 	public class BattleData

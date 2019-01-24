@@ -21,10 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Hubs\" />
     <Folder Include="Properties\" />
     <Folder Include="appsettings\" />
-    <Folder Include="Repositories\" />
+    <Folder Include="Shares\" />
+    <Folder Include="Shares\Datas\" />
+    <Folder Include="Domains\" />
+    <Folder Include="Cores\" />
+    <Folder Include="Domains\IRepositories\" />
+    <Folder Include="infrastructures\" />
+    <Folder Include="infrastructures\Redis\" />
+    <Folder Include="infrastructures\RPCs\" />
   </ItemGroup>
 
   <ItemGroup>

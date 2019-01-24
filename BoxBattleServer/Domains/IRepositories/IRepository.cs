@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BoxBattleServer
+namespace BoxBattle
 {
 	public interface IRepository<T>
 	{

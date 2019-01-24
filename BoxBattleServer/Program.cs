@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
-namespace BoxBattleServer
+namespace BoxBattle
 {
 	public class Program
 	{
@@ -43,8 +43,9 @@ namespace BoxBattleServer
 			ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(redisHost);
 			IDatabase db = redis.GetDatabase();
 
-			serviceCollection.AddSingleton<IBattleRepository>(new BattleRepository(db));
-			serviceCollection.AddSingleton<IPlayerRepository>(new PlayerRepository(db));
+			// Dependency Injection.
+			serviceCollection.AddSingleton<IBattleRepository>(new RedisBattleRepository(db));
+			serviceCollection.AddSingleton<IPlayerRepository>(new RedisPlayerRepository(db));
 		}
 
 		private static void StartMagicOnion()

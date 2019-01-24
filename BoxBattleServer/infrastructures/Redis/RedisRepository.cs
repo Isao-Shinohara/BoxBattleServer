@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MessagePack;
 using StackExchange.Redis;
 
-namespace BoxBattleServer
+namespace BoxBattle
 {
 	public class RedisRepository<T> : IRepository<T>
 	{

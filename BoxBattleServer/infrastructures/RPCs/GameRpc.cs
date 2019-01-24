@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using BoxBattle.Interfaces;
-using BoxBattleServer.Datas;
 using MagicOnion;
 using MagicOnion.Server;
 
-namespace BoxBattleServer.Hubs
+namespace BoxBattle
 {
-	public class GameService : ServiceBase<IGameService>, IGameService
+	public class GameRpc : ServiceBase<IGameRpc>, IGameRpc
 	{
 		private const string battleDataKey = "battleData";
 		private const string enemyUuidKey = "enemy";
@@ -16,13 +13,13 @@ namespace BoxBattleServer.Hubs
 		IBattleRepository battleRepository;
 		IPlayerRepository playerRepository;
 
-		public GameService()
+		public GameRpc()
 		{
 			battleRepository = ServiceLocator.Get<IBattleRepository>();
 			playerRepository = ServiceLocator.Get<IPlayerRepository>();
 		}
 
-		public async UnaryResult<BattleData> JoinBattle(string uuid)
+		public async UnaryResult<BattleData> InitializeBattle(string uuid)
 		{
 			Logger.Debug($"CreatePlayerAsync: {uuid}");
 

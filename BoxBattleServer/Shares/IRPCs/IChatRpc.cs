@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using MagicOnion;
 
-namespace BoxBattle.Interfaces
+namespace BoxBattle
 {
-    public interface IChatHub : IStreamingHub<IChatHub, IChatHubReceiver>
+    public interface IChatRpc : IStreamingHub<IChatRpc, IChatRpcReceiver>
     {
         Task JoinAsync(string userName);
         Task LeaveAsync();

@@ -12,7 +12,7 @@ public enum CharacterType
 	Rat,
 }
 
-namespace BoxBattleServer.Datas
+namespace BoxBattle
 {
 	[MessagePackObject]
 	public class PlayerData
