@@ -8,45 +8,34 @@ namespace BoxBattle
 
 		public async Task<BattleData> InitializeBattle(string uuid)
 		{
-			// Battle data.
-			var battleEntity = await battleRepository.GetAsync(BattleEntity.Key);
-			if (battleEntity == null) {
-				battleEntity = new BattleEntity(new BattleData());
+			// Battle.
+			var battle = await battleRepository.GetAsync(BattleEntity.Key);
+			if (battle == null) {
+				battle = new BattleEntity();
 			}
 
 			// My player.
 			var cRandom = new Random();
 			var max = Enum.GetValues(typeof(CharacterType)).Cast<int>().Max() + 1;
-			var myPlayerData = new PlayerData {
-				Uuid = uuid,
-				CharacterType = (CharacterType)cRandom.Next(max),
-			};
-			if (battleEntity.PlayerList.Any(x => x.Uuid == uuid)) {
-				battleEntity.PlayerList.RemoveAll(x => x.Uuid == uuid);
-			}
-			battleEntity.SetMyPlayerData(myPlayerData);
-			battleEntity.PlayerList.Add(myPlayerData);
-			var playerEntity = new PlayerEntity(myPlayerData);
-			await playerRepository.UpdateAsync(playerEntity);
+			var myPlayer = new PlayerEntity(uuid, (CharacterType)cRandom.Next(max));
+			battle.SetMyPlayer(myPlayer);
+			battle.UpdatePlayer(myPlayer);
+			await playerRepository.UpdateAsync(myPlayer);
 
 			// Enemy player.
-			var enemyPlayerEntity = await playerRepository.GetAsync(PlayerEntity.EnemyUuid);
-			if (enemyPlayerEntity == null) {
-				var enemyData = new PlayerData {
-					Uuid = PlayerEntity.EnemyUuid,
-					CharacterType = (CharacterType)cRandom.Next(max),
-				};
-				enemyPlayerEntity = new PlayerEntity(enemyData);
-				await playerRepository.UpdateAsync(enemyPlayerEntity);
-				battleEntity.PlayerList.Add(enemyData);
+			var enemyPlayer = await playerRepository.GetAsync(PlayerEntity.EnemyUuid);
+			if (enemyPlayer == null) {
+				enemyPlayer = new PlayerEntity(PlayerEntity.EnemyUuid, (CharacterType)cRandom.Next(max));
+				await playerRepository.UpdateAsync(enemyPlayer);
+				battle.UpdatePlayer(enemyPlayer);
 			}
-			battleEntity.SetEnemyPlayerData(enemyPlayerEntity.GenarateData());
+			battle.SetEnemyPlayer(enemyPlayer);
 
 			// All player.
-			await battleRepository.UpdateAsync(battleEntity);
-			battleEntity = await battleRepository.GetAsync(BattleEntity.Key);
+			await battleRepository.UpdateAsync(battle);
+			battle = await battleRepository.GetAsync(BattleEntity.Key);
 
-			return battleEntity.GenarateData();
+			return battle.GenarateData();
 		}
 	}
 }

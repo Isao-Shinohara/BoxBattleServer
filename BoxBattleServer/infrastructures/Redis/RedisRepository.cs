@@ -35,8 +35,8 @@ namespace BoxBattle
 
 		public async Task UpdateAsync(T entity)
 		{
-			var bytes = MessagePackSerializer.Serialize(entity);
-			await db.StringSetAsync(entity.Id, bytes);
+			var bytes = MessagePackSerializer.Serialize(entity, StandardResolverAllowPrivate.Instance);
+			await db.StringSetAsync((string)entity.Id, bytes);
 		}
 	}
 }

@@ -11,27 +11,28 @@ namespace BoxBattle
 		{
 		}
 
-		public PlayerEntity(PlayerData playerData)
+		public PlayerEntity(string uuid, CharacterType characterType)
 		{
-			Uuid = playerData.Uuid;
-			CharacterType = playerData.CharacterType;
+			Uuid = uuid;
+			CharacterType = characterType;
 		}
 
 		[Key(0)]
-		public string Id { get { return Uuid; } }
+		public object Id { get { return Uuid; } }
 
 		[Key(1)]
-		public string Uuid { get; set; }
+		public string Uuid { get; private set; }
 
 		[Key(2)]
-		public CharacterType CharacterType { get; set; }
+		public CharacterType CharacterType { get; private set; }
 
 		public PlayerData GenarateData()
 		{
-			return new PlayerData {
+			var data =  new PlayerData {
 				Uuid = Uuid,
 				CharacterType = CharacterType,
 			};
+			return data;
 		}
 	}
 }

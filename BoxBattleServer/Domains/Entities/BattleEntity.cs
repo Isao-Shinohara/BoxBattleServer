@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MessagePack;
 
 namespace BoxBattle
@@ -6,48 +7,48 @@ namespace BoxBattle
 	[MessagePackObject]
 	public class BattleEntity : IEntity
 	{
-		public static readonly string Key = "battleData";
-
-		public BattleEntity()
-		{
-		}
-
-		public BattleEntity(BattleData battleData)
-		{
-			MyPlayerData = battleData.MyPlayerData;
-			EnemyPlayerData = battleData.EnemyPlayerData;
-			PlayerList = battleData.PlayerList;
-		}
+		public static readonly string Key = "battle";
 
 		[Key(0)]
-		public string Id { get { return Key; } }
+		public object Id { get { return Key; } }
 
 		[Key(1)]
-		public PlayerData MyPlayerData { get; private set; }
+		public PlayerEntity MyPlayer { get; private set; }
 
 		[Key(2)]
-		public PlayerData EnemyPlayerData { get; private set; }
+		public PlayerEntity EnemyPlayer { get; private set; }
 
 		[Key(3)]
-		public List<PlayerData> PlayerList { get; private set; }
+		private List<PlayerEntity> playerList = new List<PlayerEntity>();
 
-		public void SetMyPlayerData(PlayerData playerData)
+		public void SetMyPlayer(PlayerEntity player)
 		{
-			MyPlayerData = playerData;
+			MyPlayer = player;
 		}
 
-		public void SetEnemyPlayerData(PlayerData playerData)
+		public void SetEnemyPlayer(PlayerEntity player)
 		{
-			EnemyPlayerData = playerData;
+			EnemyPlayer = player;
+		}
+
+		public void UpdatePlayer(PlayerEntity player)
+		{
+			if (playerList.Any(x => x.Uuid == player.Uuid)) {
+				playerList.RemoveAll(x => x.Uuid == player.Uuid);
+			}
+			playerList.Add(player);
 		}
 
 		public BattleData GenarateData()
 		{
-			return new BattleData {
-				MyPlayerData = MyPlayerData,
-				EnemyPlayerData = EnemyPlayerData,
-				PlayerList = PlayerList,
+			var ss = playerList.Select(x => x.GenarateData()).ToList();
+
+			var data = new BattleData {
+				MyPlayerData = MyPlayer.GenarateData(),
+				EnemyPlayerData = EnemyPlayer.GenarateData(),
+				PlayerList = playerList.Select(x => x.GenarateData()).ToList()
 			};
+			return data;
 		}
 	}
 }
