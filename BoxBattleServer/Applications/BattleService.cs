@@ -4,15 +4,12 @@ using System.Threading.Tasks;
 
 namespace BoxBattle
 {
-	public class BattleService : BaseService
-	{
-		private const string battleDataKey = "battleData";
-		private const string enemyUuidKey = "enemy";
+	public class BattleService : BaseService{
 
 		public async Task<BattleData> InitializeBattle(string uuid)
 		{
 			// Battle data.
-			var battleEntity = await battleRepository.GetAsync(battleDataKey);
+			var battleEntity = await battleRepository.GetAsync(BattleEntity.Key);
 			if (battleEntity == null) {
 				battleEntity = new BattleEntity(new BattleData());
 			}
@@ -30,26 +27,24 @@ namespace BoxBattle
 			battleEntity.SetMyPlayerData(myPlayerData);
 			battleEntity.PlayerList.Add(myPlayerData);
 			var playerEntity = new PlayerEntity(myPlayerData);
-			await playerRepository.UpdateAsync(playerEntity.Id, playerEntity);
+			await playerRepository.UpdateAsync(playerEntity);
 
 			// Enemy player.
-			var enemyPlayerEntity = await playerRepository.GetAsync(enemyUuidKey);
+			var enemyPlayerEntity = await playerRepository.GetAsync(PlayerEntity.EnemyUuid);
 			if (enemyPlayerEntity == null) {
 				var enemyData = new PlayerData {
-					Uuid = enemyUuidKey,
+					Uuid = PlayerEntity.EnemyUuid,
 					CharacterType = (CharacterType)cRandom.Next(max),
 				};
 				enemyPlayerEntity = new PlayerEntity(enemyData);
-				await playerRepository.UpdateAsync(enemyPlayerEntity.Id, enemyPlayerEntity);
+				await playerRepository.UpdateAsync(enemyPlayerEntity);
 				battleEntity.PlayerList.Add(enemyData);
 			}
 			battleEntity.SetEnemyPlayerData(enemyPlayerEntity.GenarateData());
 
 			// All player.
-			await battleRepository.UpdateAsync(battleDataKey, battleEntity);
-			battleEntity = await battleRepository.GetAsync(battleDataKey);
-
-			var test = battleEntity.GenarateData();
+			await battleRepository.UpdateAsync(battleEntity);
+			battleEntity = await battleRepository.GetAsync(BattleEntity.Key);
 
 			return battleEntity.GenarateData();
 		}

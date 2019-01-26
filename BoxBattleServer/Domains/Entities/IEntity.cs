@@ -1,7 +1,7 @@
 ﻿namespace BoxBattle
 {
-	public interface IEntity<T>
+	public interface IEntity
 	{
-		T GenarateData();
+		string Id { get; }
 	}
 }

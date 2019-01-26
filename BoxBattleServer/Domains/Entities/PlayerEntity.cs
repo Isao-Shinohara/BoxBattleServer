@@ -1,19 +1,32 @@
-﻿namespace BoxBattle
-{
-	public class PlayerEntity : BaseEntity<string, PlayerData>, IEntity<PlayerData>
-	{
-		private PlayerData playerData;
+﻿using MessagePack;
 
-		public PlayerEntity(PlayerData playerData) : base(playerData)
+namespace BoxBattle
+{
+	[MessagePackObject]
+	public class PlayerEntity : IEntity
+	{
+		public const string EnemyUuid = "enemy";
+
+		public PlayerEntity()
 		{
-			this.playerData = playerData;
 		}
 
-		public override string Id { get { return Uuid; } }
-		public string Uuid { get { return playerData.Uuid; } }
-		public CharacterType CharacterType { get { return playerData.CharacterType; } }
+		public PlayerEntity(PlayerData playerData)
+		{
+			Uuid = playerData.Uuid;
+			CharacterType = playerData.CharacterType;
+		}
 
-		public override PlayerData GenarateData()
+		[Key(0)]
+		public string Id { get { return Uuid; } }
+
+		[Key(1)]
+		public string Uuid { get; set; }
+
+		[Key(2)]
+		public CharacterType CharacterType { get; set; }
+
+		public PlayerData GenarateData()
 		{
 			return new PlayerData {
 				Uuid = Uuid,

@@ -1,19 +1,34 @@
 ﻿using System.Collections.Generic;
+using MessagePack;
 
 namespace BoxBattle
 {
-	public class BattleEntity : BaseEntity<string, BattleData>
+	[MessagePackObject]
+	public class BattleEntity : IEntity
 	{
-		public BattleEntity(BattleData battleData) : base(battleData)
+		public static readonly string Key = "battleData";
+
+		public BattleEntity()
+		{
+		}
+
+		public BattleEntity(BattleData battleData)
 		{
 			MyPlayerData = battleData.MyPlayerData;
 			EnemyPlayerData = battleData.EnemyPlayerData;
 			PlayerList = battleData.PlayerList;
 		}
 
-		public override string Id { get { return "battleEntity"; } }
+		[Key(0)]
+		public string Id { get { return Key; } }
+
+		[Key(1)]
 		public PlayerData MyPlayerData { get; private set; }
+
+		[Key(2)]
 		public PlayerData EnemyPlayerData { get; private set; }
+
+		[Key(3)]
 		public List<PlayerData> PlayerList { get; private set; }
 
 		public void SetMyPlayerData(PlayerData playerData)
@@ -26,7 +41,7 @@ namespace BoxBattle
 			EnemyPlayerData = playerData;
 		}
 
-		public override BattleData GenarateData()
+		public BattleData GenarateData()
 		{
 			return new BattleData {
 				MyPlayerData = MyPlayerData,

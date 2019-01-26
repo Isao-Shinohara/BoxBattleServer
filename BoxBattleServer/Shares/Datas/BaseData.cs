@@ -1,9 +1,9 @@
-﻿using MessagePack;
-
-namespace BoxBattle
+﻿namespace BoxBattle
 {
-	[MessagePackObject]
 	public class BaseData
 	{
+		public BaseData()
+		{
+		}
 	}
 }

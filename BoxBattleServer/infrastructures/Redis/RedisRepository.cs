@@ -2,11 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 using MessagePack;
+using MessagePack.Resolvers;
 using StackExchange.Redis;
 
 namespace BoxBattle
 {
-	public class RedisRepository<T> : IRepository<T> where T : BaseData
+	public class RedisRepository<T> : IRepository<T> where T : IEntity
 	{
 		protected IDatabase db;
 
@@ -19,7 +20,7 @@ namespace BoxBattle
 		{
 			var bytes = await db.StringGetAsync(key);
 			if (bytes.IsNull) return default(T);
-			return MessagePackSerializer.Deserialize<T>(bytes);
+			return MessagePackSerializer.Deserialize<T>(bytes, StandardResolverAllowPrivate.Instance);
 		}
 
 		public async Task<List<T>> GetListAsync(List<string> keyList)
@@ -32,10 +33,10 @@ namespace BoxBattle
 			return list;
 		}
 
-		public async Task UpdateAsync(string key, T data)
+		public async Task UpdateAsync(T entity)
 		{
-			var bytes = MessagePackSerializer.Serialize(data);
-			await db.StringSetAsync(key, bytes);
+			var bytes = MessagePackSerializer.Serialize(entity);
+			await db.StringSetAsync(entity.Id, bytes);
 		}
 	}
 }
