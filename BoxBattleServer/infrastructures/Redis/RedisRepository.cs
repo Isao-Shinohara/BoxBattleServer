@@ -6,7 +6,7 @@ using StackExchange.Redis;
 
 namespace BoxBattle
 {
-	public class RedisRepository<T> : IRepository<T>
+	public class RedisRepository<T> : IRepository<T> where T : BaseData
 	{
 		protected IDatabase db;
 
@@ -32,9 +32,9 @@ namespace BoxBattle
 			return list;
 		}
 
-		public async Task UpdateAsync(string key, T value)
+		public async Task UpdateAsync(string key, T data)
 		{
-			var bytes = MessagePackSerializer.Serialize(value);
+			var bytes = MessagePackSerializer.Serialize(data);
 			await db.StringSetAsync(key, bytes);
 		}
 	}

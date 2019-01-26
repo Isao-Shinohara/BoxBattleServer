@@ -4,7 +4,7 @@ using MessagePack;
 namespace BoxBattle
 {
 	[MessagePackObject]
-	public class BattleData
+	public class BattleData : BaseData
 	{
 		[Key(0)]
 		public PlayerData MyPlayerData;

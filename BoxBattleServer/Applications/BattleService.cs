@@ -12,9 +12,9 @@ namespace BoxBattle
 		public async Task<BattleData> InitializeBattle(string uuid)
 		{
 			// Battle data.
-			var battleData = await battleRepository.GetAsync(battleDataKey);
-			if (battleData == null) {
-				battleData = new BattleData();
+			var battleEntity = await battleRepository.GetAsync(battleDataKey);
+			if (battleEntity == null) {
+				battleEntity = new BattleEntity(new BattleData());
 			}
 
 			// My player.
@@ -24,30 +24,34 @@ namespace BoxBattle
 				Uuid = uuid,
 				CharacterType = (CharacterType)cRandom.Next(max),
 			};
-			if (battleData.PlayerList.Any(x => x.Uuid == uuid)) {
-				battleData.PlayerList.RemoveAll(x => x.Uuid == uuid);
+			if (battleEntity.PlayerList.Any(x => x.Uuid == uuid)) {
+				battleEntity.PlayerList.RemoveAll(x => x.Uuid == uuid);
 			}
-			battleData.MyPlayerData = myPlayerData;
-			battleData.PlayerList.Add(myPlayerData);
-			await playerRepository.UpdateAsync(uuid, myPlayerData);
+			battleEntity.SetMyPlayerData(myPlayerData);
+			battleEntity.PlayerList.Add(myPlayerData);
+			var playerEntity = new PlayerEntity(myPlayerData);
+			await playerRepository.UpdateAsync(playerEntity.Id, playerEntity);
 
 			// Enemy player.
-			var enemyPlayerData = await playerRepository.GetAsync(enemyUuidKey);
-			if (enemyPlayerData == null) {
-				enemyPlayerData = new PlayerData {
+			var enemyPlayerEntity = await playerRepository.GetAsync(enemyUuidKey);
+			if (enemyPlayerEntity == null) {
+				var enemyData = new PlayerData {
 					Uuid = enemyUuidKey,
 					CharacterType = (CharacterType)cRandom.Next(max),
 				};
-				await playerRepository.UpdateAsync(enemyUuidKey, enemyPlayerData);
-				battleData.PlayerList.Add(enemyPlayerData);
+				enemyPlayerEntity = new PlayerEntity(enemyData);
+				await playerRepository.UpdateAsync(enemyPlayerEntity.Id, enemyPlayerEntity);
+				battleEntity.PlayerList.Add(enemyData);
 			}
-			battleData.EnemyPlayerData = enemyPlayerData;
+			battleEntity.SetEnemyPlayerData(enemyPlayerEntity.GenarateData());
 
 			// All player.
-			await battleRepository.UpdateAsync(battleDataKey, battleData);
-			battleData = await battleRepository.GetAsync(battleDataKey);
+			await battleRepository.UpdateAsync(battleDataKey, battleEntity);
+			battleEntity = await battleRepository.GetAsync(battleDataKey);
 
-			return battleData;
+			var test = battleEntity.GenarateData();
+
+			return battleEntity.GenarateData();
 		}
 	}
 }

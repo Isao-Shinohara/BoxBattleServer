@@ -31,6 +31,7 @@
     <Folder Include="Infrastructures\Redis\" />
     <Folder Include="Infrastructures\RPCs\" />
     <Folder Include="Applications\" />
+    <Folder Include="Domains\Entities\" />
   </ItemGroup>
 
   <ItemGroup>

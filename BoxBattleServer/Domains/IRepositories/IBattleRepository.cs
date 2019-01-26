@@ -1,6 +1,6 @@
 ﻿namespace BoxBattle
 {
-	public interface IBattleRepository : IRepository<BattleData>
+	public interface IBattleRepository : IRepository<BattleEntity>
 	{
 	}
 }
