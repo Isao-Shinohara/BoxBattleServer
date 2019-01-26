@@ -15,7 +15,7 @@ public enum CharacterType
 namespace BoxBattle
 {
 	[MessagePackObject]
-	public class PlayerData : BaseData
+	public class PlayerData
 	{
 		[Key(0)]
 		public string Uuid { get; set; }

@@ -20,7 +20,7 @@ namespace BoxBattle
 		{
 			var bytes = await db.StringGetAsync(key);
 			if (bytes.IsNull) return default(T);
-			return MessagePackSerializer.Deserialize<T>(bytes, StandardResolverAllowPrivate.Instance);
+			return MessagePackSerializer.Deserialize<T>(bytes, ContractlessStandardResolverAllowPrivate.Instance);
 		}
 
 		public async Task<List<T>> GetListAsync(List<string> keyList)
@@ -35,7 +35,7 @@ namespace BoxBattle
 
 		public async Task UpdateAsync(T entity)
 		{
-			var bytes = MessagePackSerializer.Serialize(entity, StandardResolverAllowPrivate.Instance);
+			var bytes = MessagePackSerializer.Serialize(entity, ContractlessStandardResolverAllowPrivate.Instance);
 			await db.StringSetAsync((string)entity.Id, bytes);
 		}
 	}

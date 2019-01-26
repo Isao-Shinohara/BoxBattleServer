@@ -1,24 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MessagePack;
+using System.Runtime.Serialization;
 
 namespace BoxBattle
 {
-	[MessagePackObject]
 	public class BattleEntity : IEntity
 	{
 		public static readonly string Key = "battle";
 
-		[Key(0)]
+		[DataMember(Order = 0)]
 		public object Id { get { return Key; } }
 
-		[Key(1)]
+		[DataMember(Order = 1)]
 		public PlayerEntity MyPlayer { get; private set; }
 
-		[Key(2)]
+		[DataMember(Order = 2)]
 		public PlayerEntity EnemyPlayer { get; private set; }
 
-		[Key(3)]
+		[DataMember(Order = 3)]
 		private List<PlayerEntity> playerList = new List<PlayerEntity>();
 
 		public void SetMyPlayer(PlayerEntity player)
