@@ -1,5 +1,5 @@
-﻿using System.Numerics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 namespace BoxBattle
 {
@@ -7,6 +7,6 @@ namespace BoxBattle
     {
 		Task OnJoin(string uuid);
 		Task OnLeave(string uuid);
-		Task OnMove(string uuid, Vector3 position, Quaternion rotation);
+		Task OnMove(string uuid, Vector3 position, Quaternion rotation, bool moving);
 	}
 }

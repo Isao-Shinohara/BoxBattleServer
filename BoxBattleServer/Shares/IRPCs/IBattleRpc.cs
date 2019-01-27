@@ -1,6 +1,6 @@
-﻿using System.Numerics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MagicOnion;
+using UnityEngine;
 
 namespace BoxBattle
 {
@@ -8,6 +8,6 @@ namespace BoxBattle
 	{
 		Task JoinAsync(string uuid);
 		Task LeaveAsync(string uuid);
-		Task Move(string uuid, Vector3 position, Quaternion rotation);
+		Task Move(string uuid, Vector3 position, Quaternion rotation, bool moving);
 	}
 }

@@ -1,6 +1,6 @@
-﻿using System.Numerics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using MagicOnion.Server.Hubs;
+using UnityEngine;
 
 namespace BoxBattle
 {
@@ -20,9 +20,9 @@ namespace BoxBattle
 			Broadcast(room).OnLeave(uuid);
 		}
 
-		public async Task Move(string uuid, Vector3 position, Quaternion rotation)
+		public async Task Move(string uuid, Vector3 position, Quaternion rotation, bool moving)
 		{
-			Broadcast(room).OnMove(uuid, position, rotation);
+			Broadcast(room).OnMove(uuid, position, rotation, moving);
 		}
 	}
 }
