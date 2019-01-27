@@ -46,10 +46,10 @@ namespace BoxBattle
 		public int MaxMp { get; set; }
 
 		[Key(6)]
-		public Vector3 position { get; set; }
+		public Vector3 Position { get; set; }
 
 		[Key(7)]
-		public Quaternion rotation { get; set; }
+		public Quaternion Rotation { get; set; }
 
 		public PlayerData()
 		{

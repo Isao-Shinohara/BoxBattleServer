@@ -6,7 +6,7 @@ namespace BoxBattle
 {
 	public class BattleService : BaseService{
 
-		public async Task<BattleData> InitializeBattle(string uuid)
+		public async Task<BattleEntity> InitializeBattle(string uuid)
 		{
 			// Battle.
 			var battle = await battleRepository.GetAsync(BattleEntity.Key);
@@ -35,7 +35,17 @@ namespace BoxBattle
 			await battleRepository.UpdateAsync(battle);
 			battle = await battleRepository.GetAsync(BattleEntity.Key);
 
-			return battle.GenarateData();
+			return battle;
+		}
+
+		public async Task<PlayerEntity> JoinAsync(string uuid)
+		{
+			return await playerRepository.GetAsync(uuid);
+		}
+
+		public async Task<PlayerEntity> LeaveAsync(string uuid)
+		{
+			return await playerRepository.GetAsync(uuid);
 		}
 	}
 }
