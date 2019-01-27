@@ -4,8 +4,6 @@ namespace BoxBattle
 {
 	public class PlayerEntity : IEntity
 	{
-		public const string EnemyUuid = "enemy";
-
 		public PlayerEntity()
 		{
 		}

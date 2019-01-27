@@ -23,9 +23,9 @@ namespace BoxBattle
 			await playerRepository.UpdateAsync(myPlayer);
 
 			// Enemy player.
-			var enemyPlayer = await playerRepository.GetAsync(PlayerEntity.EnemyUuid);
+			var enemyPlayer = await playerRepository.GetAsync(PlayerData.EnemyUuid);
 			if (enemyPlayer == null) {
-				enemyPlayer = new PlayerEntity(PlayerEntity.EnemyUuid, (CharacterType)cRandom.Next(max));
+				enemyPlayer = new PlayerEntity(PlayerData.EnemyUuid, (CharacterType)cRandom.Next(max));
 				await playerRepository.UpdateAsync(enemyPlayer);
 				battle.UpdatePlayer(enemyPlayer);
 			}

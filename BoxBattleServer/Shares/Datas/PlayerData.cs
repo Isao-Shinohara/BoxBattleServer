@@ -1,4 +1,5 @@
 ﻿using MessagePack;
+using UnityEngine;
 
 public enum CharacterType
 {
@@ -17,6 +18,9 @@ namespace BoxBattle
 	[MessagePackObject]
 	public class PlayerData
 	{
+		[IgnoreMember]
+		public const string EnemyUuid = "enemy";
+
 		[IgnoreMember]
 		public const int ConstMaxHp = 20000;
 
@@ -40,6 +44,12 @@ namespace BoxBattle
 
 		[Key(5)]
 		public int MaxMp { get; set; }
+
+		[Key(6)]
+		public Vector3 position { get; set; }
+
+		[Key(7)]
+		public Quaternion rotation { get; set; }
 
 		public PlayerData()
 		{
