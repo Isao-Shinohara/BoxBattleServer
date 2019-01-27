@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
@@ -18,6 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="StackExchange.Redis.Extensions.Binary" Version="4.0.5" />
     <PackageReference Include="StackExchange.Redis.Extensions.Core" Version="4.0.5" />
+    <PackageReference Include="MessagePack.UnityShims" Version="1.7.3.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +33,7 @@
     <Folder Include="Infrastructures\Redis\" />
     <Folder Include="Infrastructures\RPCs\" />
     <Folder Include="Applications\" />
+    <Folder Include="Domains\Entities\" />
   </ItemGroup>
 
   <ItemGroup>

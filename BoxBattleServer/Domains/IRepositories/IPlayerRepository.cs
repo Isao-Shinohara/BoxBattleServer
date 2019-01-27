@@ -1,6 +1,6 @@
 ﻿namespace BoxBattle
 {
-	public interface IPlayerRepository : IRepository<PlayerData>
+	public interface IPlayerRepository : IRepository<PlayerEntity>
 	{
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace BoxBattle
 {
-	public class RedisBattleRepository : RedisRepository<BattleData>, IBattleRepository
+	public class RedisBattleRepository : RedisRepository<BattleEntity>, IBattleRepository
 	{
 		public RedisBattleRepository(IDatabase db) : base(db)
 		{
