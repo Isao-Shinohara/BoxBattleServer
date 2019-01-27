@@ -8,16 +8,16 @@ namespace BoxBattle
 	{
 		public static readonly string Key = "battle";
 
-		[DataMember(Order = 0)]
+		[DataMember]
 		public object Id { get { return Key; } }
 
-		[DataMember(Order = 1)]
+		[DataMember]
 		public PlayerEntity MyPlayer { get; private set; }
 
-		[DataMember(Order = 2)]
+		[DataMember]
 		public PlayerEntity EnemyPlayer { get; private set; }
 
-		[DataMember(Order = 3)]
+		[DataMember]
 		private List<PlayerEntity> playerList = new List<PlayerEntity>();
 
 		public void SetMyPlayer(PlayerEntity player)
