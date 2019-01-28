@@ -9,6 +9,7 @@ namespace BoxBattle
 		Task OnJoin(PlayerData playerData);
 		Task OnLeave(PlayerData playerData);
 		Task OnAttack(PlayerData attackerData, List<PlayerData> defenderDataList);
+		Task OnRecover(PlayerData playerData);
 		Task OnMove(string uuid, Vector3 position, Quaternion rotation, bool moving);
 	}
 }

@@ -52,6 +52,11 @@ namespace BoxBattle
 			Hp = Hp > 0 ? Hp : 0;
 		}
 
+		public void Recover()
+		{
+			Hp = MaxHp;
+		}
+
 		public PlayerData GenarateData()
 		{
 			var data =  new PlayerData {
