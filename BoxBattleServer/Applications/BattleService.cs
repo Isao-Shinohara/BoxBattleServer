@@ -62,5 +62,13 @@ namespace BoxBattle
 
 			return (attacker, defenderList);
 		}
+
+		public async Task<PlayerEntity> Recover(string uuid)
+		{
+			var player = await playerRepository.GetAsync(uuid);
+			player.Recover();
+			await playerRepository.UpdateAsync(player);
+			return player;
+		}
 	}
 }

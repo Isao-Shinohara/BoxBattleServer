@@ -37,6 +37,12 @@ namespace BoxBattle
 			Broadcast(room).OnAttack(attacker.GenarateData(), defenderDataList);
 		}
 
+		public async Task Recover(string uuid)
+		{
+			var player = await battleService.Recover(uuid);
+			Broadcast(room).OnRecover(player.GenarateData());
+		}
+
 		public async Task Move(string uuid, Vector3 position, Quaternion rotation, bool moving)
 		{
 			Broadcast(room).OnMove(uuid, position, rotation, moving);
