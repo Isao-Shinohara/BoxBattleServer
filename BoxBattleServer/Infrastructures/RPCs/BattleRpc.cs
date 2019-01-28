@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using MagicOnion.Server.Hubs;
 using UnityEngine;
 
@@ -26,6 +28,13 @@ namespace BoxBattle
 			await room.RemoveAsync(Context);
 			var playerEntity = await battleService.LeaveAsync(uuid);
 			Broadcast(room).OnLeave(playerEntity.GenarateData());
+		}
+
+		public async Task Attack(string attackerUuid, int attackerMp, List<string> defenderUuidList)
+		{
+			var (attacker, defenderList) = await battleService.Attack(attackerUuid, attackerMp, defenderUuidList);
+			var defenderDataList = defenderList.Select(p => p.GenarateData()).ToList();
+			Broadcast(room).OnAttack(attacker.GenarateData(), defenderDataList);
 		}
 
 		public async Task Move(string uuid, Vector3 position, Quaternion rotation, bool moving)

@@ -8,5 +8,6 @@ namespace BoxBattle
 		Task<T> GetAsync(string key);
 		Task<List<T>> GetListAsync(List<string> keyList);
 		Task UpdateAsync(T entity);
+		Task UpdateListAsync(List<T> entityList);
 	}
 }

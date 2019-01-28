@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace BoxBattle
 {
@@ -37,6 +38,20 @@ namespace BoxBattle
 		[DataMember]
 		public int MaxMp { get; set; }
 
+		[DataMember]
+		public bool IsDied { get; set; }
+
+		[DataMember]
+		public int DamagePoint { get; set; }
+
+		public void Damage(int attackerMp)
+		{
+			DamagePoint = BattleCalculate.Attack(attackerMp);
+			IsDied = Hp > 0 && DamagePoint >= Hp;
+			Hp = Hp - DamagePoint;
+			Hp = Hp > 0 ? Hp : 0;
+		}
+
 		public PlayerData GenarateData()
 		{
 			var data =  new PlayerData {
@@ -46,6 +61,8 @@ namespace BoxBattle
 				MaxHp = MaxHp,
 				Mp = Mp,
 				MaxMp = MaxMp,
+				IsDied = IsDied,
+				DamagePoint = DamagePoint,
 			};
 			return data;
 		}
