@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -46,6 +47,20 @@ namespace BoxBattle
 		public async Task<PlayerEntity> LeaveAsync(string uuid)
 		{
 			return await playerRepository.GetAsync(uuid);
+		}
+
+		public async Task<(PlayerEntity, List<PlayerEntity>)> Attack(string attackerUuid, int attackerMp, List<string> defenderUuidList)
+		{
+			var attacker = await playerRepository.GetAsync(attackerUuid);
+			var defenderList = await playerRepository.GetListAsync(defenderUuidList);
+
+			defenderList.ForEach(defender => {
+				defender.Damage(attackerMp);
+			});
+
+			await playerRepository.UpdateListAsync(defenderList);
+
+			return (attacker, defenderList);
 		}
 	}
 }
