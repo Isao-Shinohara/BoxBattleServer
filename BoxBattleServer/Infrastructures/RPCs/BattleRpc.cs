@@ -25,9 +25,9 @@ namespace BoxBattle
 
 		public async Task LeaveAsync(string uuid)
 		{
-			await room.RemoveAsync(Context);
 			var playerEntity = await battleService.LeaveAsync(uuid);
-			Broadcast(room).OnLeave(playerEntity.GenarateData());
+			await BroadcastExceptSelf(room).OnLeave(playerEntity.GenarateData());
+			await room.RemoveAsync(Context);
 		}
 
 		public async Task Attack(string attackerUuid, int attackerMp, List<string> defenderUuidList)
@@ -43,8 +43,19 @@ namespace BoxBattle
 			Broadcast(room).OnRecover(player.GenarateData());
 		}
 
+		public async Task ChargeMpStart(string uuid)
+		{
+			Broadcast(room).OnChargeMpStart(uuid);
+		}
+
+		public async Task ChargeMpStop(string uuid)
+		{
+			Broadcast(room).OnChargeMpStop(uuid);
+		}
+
 		public async Task Move(string uuid, Vector3 position, Quaternion rotation, bool moving)
 		{
+			battleService.Move(uuid, position, rotation);
 			Broadcast(room).OnMove(uuid, position, rotation, moving);
 		}
 	}

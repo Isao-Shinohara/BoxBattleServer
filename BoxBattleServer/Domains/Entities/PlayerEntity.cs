@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using UnityEngine;
 
 namespace BoxBattle
 {
@@ -44,6 +45,12 @@ namespace BoxBattle
 		[DataMember]
 		public int DamagePoint { get; set; }
 
+		[DataMember]
+		public Vector3 Position { get; set; }
+
+		[DataMember]
+		public Quaternion Rotation { get; set; }
+
 		public void Damage(int attackerMp)
 		{
 			DamagePoint = BattleCalculate.Attack(attackerMp);
@@ -57,6 +64,12 @@ namespace BoxBattle
 			Hp = MaxHp;
 		}
 
+		public void Move(Vector3 position, Quaternion rotation)
+		{
+			Position = position;
+			Rotation = rotation;
+		}
+
 		public PlayerData GenarateData()
 		{
 			var data =  new PlayerData {
@@ -68,6 +81,8 @@ namespace BoxBattle
 				MaxMp = MaxMp,
 				IsDied = IsDied,
 				DamagePoint = DamagePoint,
+				Position = Position,
+				Rotation = Rotation,
 			};
 			return data;
 		}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace BoxBattle
 {
@@ -19,7 +20,6 @@ namespace BoxBattle
 			var cRandom = new Random();
 			var max = Enum.GetValues(typeof(CharacterType)).Cast<int>().Max() + 1;
 			var myPlayer = new PlayerEntity(uuid, (CharacterType)cRandom.Next(max));
-			battle.SetMyPlayer(myPlayer);
 			battle.UpdatePlayer(myPlayer);
 			await playerRepository.UpdateAsync(myPlayer);
 
@@ -46,7 +46,15 @@ namespace BoxBattle
 
 		public async Task<PlayerEntity> LeaveAsync(string uuid)
 		{
-			return await playerRepository.GetAsync(uuid);
+			var player = await playerRepository.GetAsync(uuid);
+
+			var battle = await battleRepository.GetAsync(BattleEntity.Key);
+			if (battle != null) {
+				battle.LeavePlayer(player);
+				await battleRepository.UpdateAsync(battle);
+			}
+
+			return player;
 		}
 
 		public async Task<(PlayerEntity, List<PlayerEntity>)> Attack(string attackerUuid, int attackerMp, List<string> defenderUuidList)
@@ -69,6 +77,13 @@ namespace BoxBattle
 			player.Recover();
 			await playerRepository.UpdateAsync(player);
 			return player;
+		}
+
+		public async Task Move(string uuid, Vector3 position, Quaternion rotation)
+		{
+			var player = await playerRepository.GetAsync(uuid);
+			player.Move(position, rotation);
+			await playerRepository.UpdateAsync(player);
 		}
 	}
 }
