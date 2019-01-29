@@ -13,18 +13,10 @@ namespace BoxBattle
 		public object Id { get { return Key; } }
 
 		[DataMember]
-		public PlayerEntity MyPlayer { get; private set; }
-
-		[DataMember]
 		public PlayerEntity EnemyPlayer { get; private set; }
 
 		[DataMember]
 		private List<PlayerEntity> playerList = new List<PlayerEntity>();
-
-		public void SetMyPlayer(PlayerEntity player)
-		{
-			MyPlayer = player;
-		}
 
 		public void SetEnemyPlayer(PlayerEntity player)
 		{
@@ -49,7 +41,6 @@ namespace BoxBattle
 			var ss = playerList.Select(x => x.GenarateData()).ToList();
 
 			var data = new BattleData {
-				MyPlayerData = MyPlayer.GenarateData(),
 				EnemyPlayerData = EnemyPlayer.GenarateData(),
 				PlayerList = playerList.Select(x => x.GenarateData()).ToList()
 			};
