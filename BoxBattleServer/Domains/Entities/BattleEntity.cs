@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -36,6 +37,11 @@ namespace BoxBattle
 				playerList.RemoveAll(x => x.Uuid == player.Uuid);
 			}
 			playerList.Add(player);
+		}
+
+		public void LeavePlayer(PlayerEntity player)
+		{
+			playerList.RemoveAll(x => x.Uuid == player.Uuid);
 		}
 
 		public BattleData GenarateData()

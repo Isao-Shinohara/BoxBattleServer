@@ -47,7 +47,15 @@ namespace BoxBattle
 
 		public async Task<PlayerEntity> LeaveAsync(string uuid)
 		{
-			return await playerRepository.GetAsync(uuid);
+			var player = await playerRepository.GetAsync(uuid);
+
+			var battle = await battleRepository.GetAsync(BattleEntity.Key);
+			if (battle != null) {
+				battle.LeavePlayer(player);
+				await battleRepository.UpdateAsync(battle);
+			}
+
+			return player;
 		}
 
 		public async Task<(PlayerEntity, List<PlayerEntity>)> Attack(string attackerUuid, int attackerMp, List<string> defenderUuidList)
