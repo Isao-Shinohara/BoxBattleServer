@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace BoxBattle
 {
@@ -69,6 +70,13 @@ namespace BoxBattle
 			player.Recover();
 			await playerRepository.UpdateAsync(player);
 			return player;
+		}
+
+		public async Task Move(string uuid, Vector3 position, Quaternion rotation)
+		{
+			var player = await playerRepository.GetAsync(uuid);
+			player.Move(position, rotation);
+			await playerRepository.UpdateAsync(player);
 		}
 	}
 }
