@@ -13,6 +13,7 @@ namespace BoxBattle
 		Task ChargeMpStart(string uuid);
 		Task ChargeMpStop(string uuid);
 		Task Recover(string uuid);
-		Task Move(string uuid, Vector3 position, Quaternion rotation, bool moving);
+		Task CharacterMoving(string uuid, Vector3 position, Quaternion rotation, bool moving);
+		Task Move(string uuid, Vector3 position, Quaternion rotation);
 	}
 }

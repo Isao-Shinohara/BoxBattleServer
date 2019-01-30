@@ -53,10 +53,15 @@ namespace BoxBattle
 			Broadcast(room).OnChargeMpStop(uuid);
 		}
 
-		public async Task Move(string uuid, Vector3 position, Quaternion rotation, bool moving)
+		public async Task CharacterMoving(string uuid, Vector3 position, Quaternion rotation, bool moving)
 		{
-			battleService.Move(uuid, position, rotation);
-			Broadcast(room).OnMove(uuid, position, rotation, moving);
+			battleService.CharacterMoving(uuid, position, rotation);
+			Broadcast(room).OnCharacterMoving(uuid, position, rotation, moving);
+		}
+
+		public async Task Move(string uuid, Vector3 position, Quaternion rotation)
+		{
+			Broadcast(room).OnMove(uuid, position, rotation);
 		}
 	}
 }
