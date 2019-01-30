@@ -7,7 +7,7 @@ namespace BoxBattle
 {
 	public interface IBattleRpc : IStreamingHub<IBattleRpc, IBattleRpcReceiver>
 	{
-		Task JoinAsync(string uuid);
+		Task JoinAsync(string uuid, Vector3 position, Quaternion rotation);
 		Task LeaveAsync(string uuid);
 		Task Attack(string attackerUuid, int attackerMp, List<string> defenderUuidList);
 		Task ChargeMpStart(string uuid);
