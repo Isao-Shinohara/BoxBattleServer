@@ -38,8 +38,6 @@ namespace BoxBattle
 
 		public BattleData GenarateData()
 		{
-			var ss = playerList.Select(x => x.GenarateData()).ToList();
-
 			var data = new BattleData {
 				EnemyPlayerData = EnemyPlayer.GenarateData(),
 				PlayerList = playerList.Select(x => x.GenarateData()).ToList()

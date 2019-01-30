@@ -82,11 +82,14 @@ namespace BoxBattle
 			return player;
 		}
 
-		public async Task CharacterMoving(string uuid, Vector3 position, Quaternion rotation)
+		public async Task Move(string uuid, Vector3 position, Quaternion rotation)
 		{
 			var player = await playerRepository.GetAsync(uuid);
+			var battle = await battleRepository.GetAsync(BattleEntity.Key);
 			player.Move(position, rotation);
-			await playerRepository.UpdateAsync(player);
+			battle.UpdatePlayer(player);
+			playerRepository.UpdateAsync(player);
+			battleRepository.UpdateAsync(battle);
 		}
 	}
 }
