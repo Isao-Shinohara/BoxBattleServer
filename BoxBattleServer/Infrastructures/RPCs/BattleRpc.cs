@@ -16,10 +16,10 @@ namespace BoxBattle
 			battleService = ServiceLocator.Get<BattleService>();
 		}
 
-		public async Task JoinAsync(string uuid)
+		public async Task JoinAsync(string uuid, Vector3 position, Quaternion rotation)
 		{
 			room = await Group.AddAsync("BattleRoom");
-			var playerEntity = await battleService.JoinAsync(uuid);
+			var playerEntity = await battleService.JoinAsync(uuid, position, rotation);
 			Broadcast(room).OnJoin(playerEntity.GenarateData());
 		}
 
