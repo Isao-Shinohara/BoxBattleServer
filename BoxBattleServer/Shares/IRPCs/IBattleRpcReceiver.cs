@@ -12,6 +12,7 @@ namespace BoxBattle
 		Task OnChargeMpStart(string uuid);
 		Task OnChargeMpStop(string uuid);
 		Task OnRecover(PlayerData playerData);
-		Task OnMove(string uuid, Vector3 position, Quaternion rotation, bool moving);
+		Task OnCharacterMoving(string uuid, Vector3 position, Quaternion rotation, bool moving);
+		Task OnMove(string uuid, Vector3 position, Quaternion rotation);
 	}
 }
