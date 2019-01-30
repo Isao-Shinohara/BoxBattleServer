@@ -4,4 +4,4 @@ if [ "$1" = "" ]; then
     exit
 fi
 
-dotnet run --launch-profile $1 --project BoxBattleServer
+dotnet run --launch-profile $1 --project BoxBattleServer &
