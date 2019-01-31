@@ -51,24 +51,22 @@ namespace BoxBattle
 
 		private static void StartMagicOnion()
 		{
-			// Set console log
-			GrpcEnvironment.SetLogger(new CompositeLogger(
-				new ConsoleLogger()
-			));
-
 			// MagicOnion
-			var options = new MagicOnionOptions(true) {
-				MagicOnionLogger = new MagicOnionLogToGrpcLoggerWithNamedDataDump()
-			};
-
-			if (configuration["ASPNETCORE_ENVIRONMENT"] != "Local") {
+			var options = new MagicOnionOptions(true);
+			if (configuration["ASPNETCORE_ENVIRONMENT"] == "Local")
+			{
+				// Logger
+				GrpcEnvironment.SetLogger(new CompositeLogger(new ConsoleLogger()));
+				options.MagicOnionLogger = new MagicOnionLogToGrpcLoggerWithNamedDataDump();
+			} else {
+				// Redis
 				var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
-				Console.WriteLine($"Redis host: {redisHost}");
 				options.DefaultGroupRepositoryFactory = new RedisGroupRepositoryFactory();
 				options.ServiceLocator.Register(ConnectionMultiplexer.Connect(redisHost));
 			}
 			var service = MagicOnionEngine.BuildServerServiceDefinition(options);
 
+			// gRPC
 			var serverHost = configuration["Server:Host"];
 			var serverPort = Int32.Parse(configuration["Server:Port"]);
 			Console.WriteLine($"Server host: {serverHost}, port {serverPort}");
