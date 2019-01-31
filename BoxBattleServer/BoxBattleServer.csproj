@@ -36,6 +36,7 @@
     <Folder Include="Infrastructures\RPCs\" />
     <Folder Include="Applications\" />
     <Folder Include="Domains\Entities\" />
+    <Folder Include="Infrastructures\EntityFrameworks\" />
   </ItemGroup>
 
   <ItemGroup>

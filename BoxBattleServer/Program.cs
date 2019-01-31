@@ -5,6 +5,7 @@ using Grpc.Core;
 using Grpc.Core.Logging;
 using MagicOnion.Redis;
 using MagicOnion.Server;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
@@ -41,7 +42,14 @@ namespace BoxBattle
 			if (configuration["ASPNETCORE_ENVIRONMENT"] == "Local" || configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
 			{
 				// Local or Development.
+				var options = new DbContextOptionsBuilder<EFContext>()
+								.UseInMemoryDatabase(databaseName: "BoxBattle").Options;
+				var efContext = new EFContext(options);
+
 				// Dependency Injection.
+				serviceCollection.AddSingleton(new EFContext(options));
+				serviceCollection.AddSingleton<IBattleRepository>(new EFBattleRepository(efContext));
+				serviceCollection.AddSingleton<IPlayerRepository>(new EFPlayerRepository(efContext));
 			} else {
 				// Staging or Production.
 				var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
