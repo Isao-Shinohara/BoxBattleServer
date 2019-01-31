@@ -42,8 +42,11 @@ namespace BoxBattle
 		public async Task<PlayerEntity> JoinAsync(string uuid, Vector3 position, Quaternion rotation)
 		{
 			var player = await playerRepository.GetAsync(uuid);
+			var battle = await battleRepository.GetAsync(BattleEntity.Key);
 			player.Move(position, rotation);
+			battle.UpdatePlayer(player);
 			await playerRepository.UpdateAsync(player);
+			await battleRepository.UpdateAsync(battle);
 			return player;
 		}
 
