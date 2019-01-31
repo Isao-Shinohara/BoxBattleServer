@@ -38,14 +38,23 @@ namespace BoxBattle
 
 		private static void ConfigureServices(IServiceCollection serviceCollection)
 		{
-			var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
-			Console.WriteLine($"Redis host: {redisHost}");
-			ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(redisHost);
-			IDatabase db = redis.GetDatabase();
+			if (configuration["ASPNETCORE_ENVIRONMENT"] == "Local" || configuration["ASPNETCORE_ENVIRONMENT"] == "Development")
+			{
+				// Local or Development.
+				// Dependency Injection.
+			} else {
+				// Staging or Production.
+				var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
+				Console.WriteLine($"Redis host: {redisHost}");
+				ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(redisHost);
+				IDatabase db = redis.GetDatabase();
 
-			// Dependency Injection.
-			serviceCollection.AddSingleton<IBattleRepository>(new RedisBattleRepository(db));
-			serviceCollection.AddSingleton<IPlayerRepository>(new RedisPlayerRepository(db));
+				// Dependency Injection.
+				serviceCollection.AddSingleton<IBattleRepository>(new RedisBattleRepository(db));
+				serviceCollection.AddSingleton<IPlayerRepository>(new RedisPlayerRepository(db));
+			}
+
+			// Common settings.
 			serviceCollection.AddSingleton(new BattleService());
 		}
 
@@ -55,10 +64,12 @@ namespace BoxBattle
 			var options = new MagicOnionOptions(true);
 			if (configuration["ASPNETCORE_ENVIRONMENT"] == "Local")
 			{
+				// Local.
 				// Logger
 				GrpcEnvironment.SetLogger(new CompositeLogger(new ConsoleLogger()));
 				options.MagicOnionLogger = new MagicOnionLogToGrpcLoggerWithNamedDataDump();
-			} else {
+			} else if (configuration["ASPNETCORE_ENVIRONMENT"] != "Development")  {
+				// Staging or Production.
 				// Redis
 				var redisHost = $"{configuration["Redis:Host"]}:{configuration["Redis:Port"]}";
 				options.DefaultGroupRepositoryFactory = new RedisGroupRepositoryFactory();
