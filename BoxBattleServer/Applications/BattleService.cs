@@ -48,6 +48,7 @@ namespace BoxBattle
 			battle.UpdatePlayer(player);
 			await playerRepository.UpdateAsync(player);
 			await battleRepository.UpdateAsync(battle);
+			await battleRepository.Save();
 			return player;
 		}
 
@@ -59,6 +60,7 @@ namespace BoxBattle
 			if (battle != null) {
 				battle.LeavePlayer(player);
 				await battleRepository.UpdateAsync(battle);
+				await battleRepository.Save();
 			}
 
 			return player;
@@ -74,6 +76,7 @@ namespace BoxBattle
 			});
 
 			await playerRepository.UpdateListAsync(defenderList);
+			await playerRepository.Save();
 
 			return (attacker, defenderList);
 		}
@@ -83,6 +86,7 @@ namespace BoxBattle
 			var player = await playerRepository.GetAsync(uuid);
 			player.Recover();
 			await playerRepository.UpdateAsync(player);
+			await playerRepository.Save();
 			return player;
 		}
 
@@ -94,6 +98,7 @@ namespace BoxBattle
 			battle.UpdatePlayer(player);
 			playerRepository.UpdateAsync(player);
 			battleRepository.UpdateAsync(battle);
+			await battleRepository.Save();
 		}
 	}
 }
