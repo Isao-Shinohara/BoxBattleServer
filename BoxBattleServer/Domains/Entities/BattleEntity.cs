@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
 namespace BoxBattle
 {
-	public class BattleEntity : IEntity
+	public class BattleEntity : IEntity<string>
 	{
 		public static readonly string Key = "battle";
 
 		[DataMember]
-		public object Id { get { return Key; } }
+		public string Id { get; private set; }
 
 		[DataMember]
 		public PlayerEntity EnemyPlayer { get; private set; }
@@ -20,6 +19,7 @@ namespace BoxBattle
 
 		public void SetEnemyPlayer(PlayerEntity player)
 		{
+			Id = Key;
 			EnemyPlayer = player;
 		}
 

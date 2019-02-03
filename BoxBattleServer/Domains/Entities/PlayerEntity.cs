@@ -1,10 +1,9 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace BoxBattle
 {
-	public class PlayerEntity : IEntity
+	public class PlayerEntity : IEntity<string>
 	{
 		public PlayerEntity()
 		{
@@ -12,6 +11,7 @@ namespace BoxBattle
 
 		public PlayerEntity(string uuid, CharacterType characterType)
 		{
+			Id = uuid;
 			Uuid = uuid;
 			CharacterType = characterType;
 			Hp = MaxHp = PlayerData.ConstMaxHp;
@@ -19,7 +19,7 @@ namespace BoxBattle
 		}
 
 		[DataMember]
-		public object Id { get { return Uuid; } }
+		public string Id { get; private set; }
 
 		[DataMember]
 		public string Uuid { get; private set; }

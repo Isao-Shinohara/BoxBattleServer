@@ -34,8 +34,9 @@ namespace BoxBattle
 
 			// All player.
 			await battleRepository.UpdateAsync(battle);
-			battle = await battleRepository.GetAsync(BattleEntity.Key);
+			await battleRepository.Save();
 
+			battle = await battleRepository.GetAsync(BattleEntity.Key);
 			return battle;
 		}
 

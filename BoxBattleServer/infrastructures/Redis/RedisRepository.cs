@@ -7,13 +7,17 @@ using StackExchange.Redis;
 
 namespace BoxBattle
 {
-	public class RedisRepository<T> : IRepository<T> where T : IEntity
+	public class RedisRepository<T> : IRepository<string, T> where T : IEntity<string>
 	{
 		protected IDatabase db;
 
 		public RedisRepository(IDatabase db)
 		{
 			this.db = db;
+		}
+
+		public async Task Save()
+		{
 		}
 
 		public async Task<T> GetAsync(string key)

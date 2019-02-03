@@ -1,7 +1,7 @@
 ﻿namespace BoxBattle
 {
-	public interface IEntity
+	public interface IEntity<T>
 	{
-		object Id { get; }
+		T Id { get; }
 	}
 }
