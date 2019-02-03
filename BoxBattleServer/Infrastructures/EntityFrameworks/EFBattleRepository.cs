@@ -23,12 +23,9 @@ namespace BoxBattle
 
 		public override async Task UpdateAsync(BattleEntity entity)
 		{
-			db.Battles.Update(entity);
-		}
-
-		public override async Task UpdateListAsync(List<BattleEntity> entityList)
-		{
-			db.Battles.UpdateRange(entityList);
+			if (!db.Battles.Contains(entity)) {
+				db.Battles.Add(entity);
+			}
 		}
 	}
 }

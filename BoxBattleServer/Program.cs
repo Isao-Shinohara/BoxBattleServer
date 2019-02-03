@@ -43,7 +43,7 @@ namespace BoxBattle
 			{
 				// Local or Development.
 				var options = new DbContextOptionsBuilder<EFContext>()
-								.UseInMemoryDatabase(databaseName: "BoxBattle").Options;
+								.UseInMemoryDatabase("BoxBattle").Options;
 				var efContext = new EFContext(options);
 
 				// Dependency Injection.

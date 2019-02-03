@@ -1,15 +1,21 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BoxBattle
 {
-	public class EFRepository<T> : IRepository<T> where T : IEntity
+	public class EFRepository<T> : IRepository<string, T> where T : IEntity<string>
 	{
 		protected EFContext db;
 
 		public EFRepository(EFContext db)
 		{
 			this.db = db;
+		}
+
+		public virtual async Task Save()
+		{
+			await db.SaveChangesAsync();
 		}
 
 		public virtual async Task<T> GetAsync(string key)
@@ -28,6 +34,9 @@ namespace BoxBattle
 
 		public virtual async Task UpdateListAsync(List<T> entityList)
 		{
+			await Task.WhenAll(entityList.Select(async e => {
+				await UpdateAsync(e);
+			}));
 		}
 	}
 }

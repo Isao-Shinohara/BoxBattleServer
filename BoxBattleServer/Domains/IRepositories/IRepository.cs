@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 
 namespace BoxBattle
 {
-	public interface IRepository<T> where T : IEntity
+	public interface IRepository<T, U> where U : IEntity<T>
 	{
-		Task<T> GetAsync(string key);
-		Task<List<T>> GetListAsync(List<string> keyList);
-		Task UpdateAsync(T entity);
-		Task UpdateListAsync(List<T> entityList);
+		Task Save();
+		Task<U> GetAsync(string key);
+		Task<List<U>> GetListAsync(List<T> keyList);
+		Task UpdateAsync(U entity);
+		Task UpdateListAsync(List<U> entityList);
 	}
 }

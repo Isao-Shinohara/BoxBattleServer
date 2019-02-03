@@ -22,20 +22,25 @@ namespace BoxBattle
 			var myPlayer = new PlayerEntity(uuid, (CharacterType)cRandom.Next(max));
 			battle.UpdatePlayer(myPlayer);
 			await playerRepository.UpdateAsync(myPlayer);
+			await playerRepository.Save();
+
+			var test = await playerRepository.GetAsync(uuid);
 
 			// Enemy player.
 			var enemyPlayer = await playerRepository.GetAsync(PlayerData.EnemyUuid);
 			if (enemyPlayer == null) {
 				enemyPlayer = new PlayerEntity(PlayerData.EnemyUuid, (CharacterType)cRandom.Next(max));
 				await playerRepository.UpdateAsync(enemyPlayer);
+				await playerRepository.Save();
 				battle.UpdatePlayer(enemyPlayer);
 			}
 			battle.SetEnemyPlayer(enemyPlayer);
 
 			// All player.
 			await battleRepository.UpdateAsync(battle);
-			battle = await battleRepository.GetAsync(BattleEntity.Key);
+			await battleRepository.Save();
 
+			battle = await battleRepository.GetAsync(BattleEntity.Key);
 			return battle;
 		}
 
