@@ -13,7 +13,7 @@ namespace BoxBattle
 
 		public override async Task<BattleEntity> GetAsync(string key)
 		{
-			return db.Battles.FirstOrDefault(x => (string)x.Id == key);
+			return db.Battles.FirstOrDefault(x => x.Id == key);
 		}
 
 		public override async Task<List<BattleEntity>> GetListAsync(List<string> keyList)

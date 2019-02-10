@@ -25,9 +25,7 @@ namespace BoxBattle
 
 		public void UpdatePlayer(PlayerEntity player)
 		{
-			if (playerList.Any(x => x.Uuid == player.Uuid)) {
-				playerList.RemoveAll(x => x.Uuid == player.Uuid);
-			}
+			LeavePlayer(player);
 			playerList.Add(player);
 		}
 
