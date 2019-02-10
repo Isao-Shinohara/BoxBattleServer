@@ -28,6 +28,12 @@ namespace BoxBattle
 			return new List<T>();
 		}
 
+		public async Task DeleteAsync(string key)
+		{
+			var entity = GetAsync(key);
+			db.Remove(entity);
+		}
+
 		public virtual async Task UpdateAsync(T entity)
 		{
 		}

@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace BoxBattle
@@ -50,6 +51,11 @@ namespace BoxBattle
 
 		[DataMember]
 		public Quaternion Rotation { get; set; }
+
+		public void ChangeCharacter(CharacterType characterType)
+		{
+			CharacterType = characterType;
+		}
 
 		public void Damage(int attackerMp)
 		{

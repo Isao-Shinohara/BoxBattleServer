@@ -37,6 +37,11 @@ namespace BoxBattle
 			return list;
 		}
 
+		public async Task DeleteAsync(string key)
+		{
+			await db.KeyDeleteAsync(key);
+		}
+
 		public async Task UpdateAsync(T entity)
 		{
 			var bytes = MessagePackSerializer.Serialize(entity, ContractlessStandardResolverAllowPrivate.Instance);

@@ -19,7 +19,12 @@ namespace BoxBattle
 			// My player.
 			var cRandom = new Random();
 			var max = Enum.GetValues(typeof(CharacterType)).Cast<int>().Max() + 1;
-			var myPlayer = new PlayerEntity(uuid, (CharacterType)cRandom.Next(max));
+			var myPlayer = await playerRepository.GetAsync(uuid);
+			if(myPlayer != null) {
+				myPlayer.ChangeCharacter((CharacterType)cRandom.Next(max));
+			} else {
+				myPlayer = new PlayerEntity(uuid, (CharacterType)cRandom.Next(max));
+			}
 			battle.UpdatePlayer(myPlayer);
 			await playerRepository.UpdateAsync(myPlayer);
 
