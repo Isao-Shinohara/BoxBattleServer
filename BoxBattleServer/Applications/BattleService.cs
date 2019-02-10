@@ -22,6 +22,7 @@ namespace BoxBattle
 			var myPlayer = await playerRepository.GetAsync(uuid);
 			if(myPlayer != null) {
 				myPlayer.ChangeCharacter((CharacterType)cRandom.Next(max));
+				myPlayer.Recover();
 			} else {
 				myPlayer = new PlayerEntity(uuid, (CharacterType)cRandom.Next(max));
 			}
