@@ -26,7 +26,7 @@ namespace BoxBattle
 		public async Task LeaveAsync(string uuid)
 		{
 			var playerEntity = await battleService.LeaveAsync(uuid);
-			await BroadcastExceptSelf(room).OnLeave(playerEntity.GenarateData());
+			BroadcastExceptSelf(room).OnLeave(playerEntity.GenarateData());
 			await room.RemoveAsync(Context);
 		}
 
